@@ -40,7 +40,13 @@ func (p *productCatalog) Watch(req *healthpb.HealthCheckRequest, ws healthpb.Hea
 
 func (p *productCatalog) ListProducts(context.Context, *pb.Empty) (*pb.ListProductsResponse, error) {
 	time.Sleep(extraLatency)
-
+        calc := NewCalc()
+        log.Debug("Starting to calculate pi.")
+        start := time.Now()
+        calc.CalculatePi()
+        end := time.Now()
+        elapsed := end.Sub(start)
+        log.Debug("Finished calculating pi in", elapsed)
 	return &pb.ListProductsResponse{Products: p.parseCatalog()}, nil
 }
 

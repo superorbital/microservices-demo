@@ -61,6 +61,14 @@ func init() {
 		TimestampFormat: time.RFC3339Nano,
 	}
 	log.Out = os.Stdout
+        levelVar := os.Getenv("LOG_LEVEL")
+        var level logrus.Level
+        if levelVar == "" {
+                level = logrus.InfoLevel
+        } else if levelVar == "DEBUG" {
+                level = logrus.DebugLevel
+        }
+        log.SetLevel(level)
 	catalogMutex = &sync.Mutex{}
 }
 
