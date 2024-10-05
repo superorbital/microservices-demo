@@ -39,11 +39,6 @@ namespace cartservice.services
 
         public override Task<Cart> GetCart(GetCartRequest request, ServerCallContext context)
         {
-            Random random = new Random();
-            if (random.Next(0, 4) == 0) // 25% chance
-            {
-                throw new RpcException(new Status(StatusCode.Internal, "Unable to frobnicate the cargo cult, aborting."));
-            }
             return _cartStore.GetCartAsync(request.UserId);
         }
 

@@ -89,6 +89,12 @@ namespace cartservice.cartstore
                 // Access the cart from the cache
                 var value = await _cache.GetAsync(userId);
 
+	        Random random = new Random();
+                if (random.Next(0, 4) == 0) // 25% chance
+                {
+                    throw new RpcException(new Status(StatusCode.Internal, "Unable to frobnicate the cargo cult, aborting."));
+                }
+
                 if (value != null)
                 {
                     return Hipstershop.Cart.Parser.ParseFrom(value);
@@ -97,6 +103,12 @@ namespace cartservice.cartstore
                 // We decided to return empty cart in cases when user wasn't in the cache before
                 return new Hipstershop.Cart();
             }
+
+	    catch (RpcException ex) when (ex.Status.StatusCode == StatusCode.Internal && ex.Status.Detail.Contains("frobnicate"))
+            {
+                throw; // Re-raises our bogus exception
+            }
+
             catch (Exception ex)
             {
                 throw new RpcException(new Status(StatusCode.FailedPrecondition, $"Can't access cart storage. {ex}"));
